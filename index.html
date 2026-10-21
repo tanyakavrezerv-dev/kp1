@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Персональное решение | Кадастровый инженер</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --c-primary: #1a365d; 
+            --c-accent: #B4531A; 
+            --c-accent-hover: #963F10;
+            --c-bg: #f8fafc; 
+            --c-bg-alt: #ffffff;
+            --c-text: #1A1F2B; 
+            --c-text-2: #5A6272; 
+            --c-line: #E3DED5; 
+            --radius: 16px;
+            --sidebar-w: 320px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--c-text);
+            background-color: var(--c-bg);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 40px 24px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'PT Serif', serif;
+            color: var(--c-primary);
+            line-height: 1.2;
+        }
+
+        .header-title {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        .header-title h1 {
+            font-size: clamp(28px, 4vw, 40px);
+            margin-bottom: 8px;
+        }
+        .header-title p {
+            color: var(--c-text-2);
+            font-size: 18px;
+        }
+
+        .dashboard-container {
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .dashboard {
+            background: var(--c-bg-alt);
+            border-radius: var(--radius);
+            box-shadow: 0 24px 48px rgba(26, 54, 93, 0.08);
+            border: 1px solid var(--c-line);
+            display: flex;
+            overflow: hidden;
+            min-height: 600px;
+        }
+
+        .sidebar {
+            width: var(--sidebar-w);
+            background: #f1f5f9;
+            border-right: 1px solid var(--c-line);
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--c-text-2);
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            width: 100%;
+            text-align: left;
+            padding: 16px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--c-text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            line-height: 1.4;
+        }
+
+        .nav-btn:hover {
+            background: rgba(26, 54, 93, 0.05);
+        }
+
+        .nav-btn.active {
+            background: #fff;
+            border-color: var(--c-line);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            color: var(--c-primary);
+            font-weight: 600;
+            position: relative;
+        }
+
+        .nav-btn.active::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: var(--c-accent);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .nav-category {
+            font-size: 12px;
+            color: var(--c-accent);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: block;
+            letter-spacing: 0.05em;
+        }
+
+        .content-area {
+            padding: 48px;
+            flex-grow: 1;
+            position: relative;
+            background: #fff;
+        }
+
+        .pane {
+            display: none;
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pane h2 {
+            font-size: 32px;
+            margin-bottom: 16px;
+        }
+
+        .pane-lead {
+            font-size: 18px;
+            color: var(--c-text-2);
+            margin-bottom: 32px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid var(--c-line);
+        }
+
+        .solution-box {
+            background: #FFF7ED;
+            border: 1px solid #FFEDD5;
+            padding: 32px;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .solution-box h3 {
+            color: var(--c-accent);
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .check-list { list-style: none; }
+        .check-list li {
+            position: relative;
+            padding-left: 32px;
+            margin-bottom: 16px;
+            font-size: 16px;
+        }
+        .check-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--c-accent);
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 52px;
+            padding: 0 32px;
+            background: var(--c-accent);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: var(--c-accent-hover); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--c-primary);
+            color: var(--c-primary);
+        }
+        .btn-outline:hover {
+            background: var(--c-primary);
+            color: #fff;
+        }
+
+        .actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+        }
+
+        .engineer-footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--c-line);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .engineer-footer img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--c-line);
+            object-fit: cover;
+        }
+        .engineer-info { font-size: 14px; color: var(--c-text-2); }
+        .engineer-info strong { color: var(--c-primary); display: block; }
+
+        @media(max-width: 900px) {
+            .dashboard { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--c-line);
+                padding: 24px;
+            }
+            .nav-list {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 8px;
+                scroll-snap-type: x mandatory;
+            }
+            .nav-btn {
+                min-width: 260px;
+                scroll-snap-align: start;
+            }
+            .nav-btn.active::before {
+                left: 50%;
+                top: auto;
+                bottom: -8px;
+                transform: translateX(-50%);
+                width: 24px;
+                height: 4px;
+                border-radius: 4px 4px 0 0;
+            }
+            .content-area { padding: 32px 24px; }
+            .actions { flex-direction: column; }
+            .actions .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <div class="header-title">
+            <h1>Кадастровые решения без посредников</h1>
+            <p>Выберите ситуацию, с которой вы столкнулись</p>
+        </div>
+
+        <div class="dashboard">
+            <!-- БОКОВОЕ МЕНЮ (БОЛИ) -->
+            <aside class="sidebar">
+                <div class="sidebar-title">Ваша ситуация:</div>
+                <ul class="nav-list">
+                    <li>
+                        <button class="nav-btn active" data-target="pane-subsidy">
+                            <span class="nav-category">КФХ и Агробизнес</span>
+                            Нужна субсидия, а границы полей не уточнены
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" data-target="pane-pai">
+                            <span class="nav-category">КФХ и Агробизнес</span>
+                            Тихий захват пашни и проблемы с пайщиками
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" data-target="pane-neighbor">
+                            <span class="nav-category">Частным лицам</span>
+                            Спор с соседом: забор стоит не там
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" data-target="pane-deal">
+                            <span class="nav-category">Частным лицам</span>
+                            Зависла продажа дома или наследство
+                        </button>
+                    </li>
+                    <li>
+                        <button class="nav-btn" data-target="pane-business">
+                            <span class="nav-category">Бизнесу</span>
+                            Оформление складов, баз и ангаров
+                        </button>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- ОБЛАСТЬ КОНТЕНТА (ОФФЕРЫ) -->
+            <main class="content-area">
+                
+                <!-- Панель 1: Субсидии -->
+                <div class="pane active" id="pane-subsidy">
+                    <h2>Земля работает, а субсидии и кредиты недоступны?</h2>
+                    <p class="pane-lead">Минсельхоз и банки требуют строгих выписок из ЕГРН. Нет точных координат в реестре — нет финансирования, льготных кредитов и грантов.</p>
+                    
+                    <div class="solution-box">
+                        <h3>Как я решу эту задачу:</h3>
+                        <ul class="check-list">
+                            <li><strong>Аудит документов.</strong> Бесплатно проверю текущее состояние ваших участков по базам Росреестра.</li>
+                            <li><strong>Точное межевание.</strong> Выеду в поле с высокоточным GNSS-оборудованием. Сниму фактические границы.</li>
+                            <li><strong>Оформление под ключ.</strong> Подготовлю межевые планы, устраню реестровые ошибки (если они есть) и помогу с постановкой на учет.</li>
+                        </ul>
+                    </div>
+                    <p>Вы получите идеальные выписки из ЕГРН, к которым не придерется ни один банк или надзорный орган. Занимайтесь посевной, а бумажную работу я возьму на себя.</p>
+                    
+                    <div class="actions">
+                        <a href="tel:+79000000000" class="btn">Обсудить ваш участок</a>
+                        <a href="#" class="btn btn-outline">Написать в WhatsApp</a>
+                    </div>
+                </div>
+
+                <!-- Панель 2: Паи и захват -->
+                <div class="pane" id="pane-pai">
+                    <h2>Защита земельного банка и выдел долей</h2>
+                    <p class="pane-lead">Невыделенные земельные доли (паи) или наложения границ соседей отнимают у вас ценные гектары каждый сезон. Это прямая потеря урожая и денег.</p>
+                    
+                    <div class="solution-box">
+                        <h3>Что я предлагаю:</h3>
+                        <ul class="check-list">
+                            <li><strong>Выдел паев "под ключ".</strong> От подготовки проекта межевания и публикации извещения в газете до кадастрового учета.</li>
+                            <li><strong>Разрешение наложений.</strong> Законно и без долгих судов разберусь с «чересполосицей» и наложениями от соседних хозяйств.</li>
+                            <li><strong>Установка межевых знаков.</strong> Закрепим границы на местности. Никто больше не сможет "случайно" припахать вашу землю.</li>
+                        </ul>
+                    </div>
+                    <p>Земля — ваш главный актив. Защитите его юридически, чтобы избежать изъятия паев и претензий соседей.</p>
+                    
+                    <div class="actions">
+                        <a href="tel:+79000000000" class="btn">Бесплатный аудит границ</a>
+                    </div>
+                </div>
+
+                <!-- Панель 3: Споры с соседями -->
+                <div class="pane" id="pane-neighbor">
+                    <h2>Спор с соседом: забор стоит не там?</h2>
+                    <p class="pane-lead">Устные конфликты из-за межи могут длиться годами и портить нервы. Сосед мог сдвинуть забор или построить сарай прямо на вашей территории.</p>
+                    
+                    <div class="solution-box">
+                        <h3>Мой план действий:</h3>
+                        <ul class="check-list">
+                            <li><strong>Поднятие архивов.</strong> Изучу первичные документы на землю (с 90-х годов), чтобы понять, где исторически проходила граница.</li>
+                            <li><strong>Независимые замеры.</strong> Выеду на место, проведу точные измерения по фактическим заборам и строениями.</li>
+                            <li><strong>Заключение специалиста.</strong> Подготовлю досудебное заключение кадастрового инженера. В 70% случаев этого документа достаточно, чтобы сосед согласился перенести забор без суда.</li>
+                        </ul>
+                    </div>
+                    <p>Если дело дойдет до суда, я буду работать в связке с вашим юристом и предоставлю железобетонные технические доказательства вашей правоты.</p>
+                    
+                    <div class="actions">
+                        <a href="tel:+79000000000" class="btn">Получить консультацию</a>
+                        <a href="#" class="btn btn-outline">Написать в MAX</a>
+                    </div>
+                </div>
+
+                <!-- Панель 4: Сделки и Наследство -->
+                <div class="pane" id="pane-deal">
+                    <h2>Зависла продажа дома или оформление наследства</h2>
+                    <p class="pane-lead">Нотариус отказывает в выдаче свидетельства? Банк покупателя не одобряет ипотеку из-за отсутствия межевания или неузаконенной пристройки?</p>
+                    
+                    <div class="solution-box">
+                        <h3>Как мы спасем сделку:</h3>
+                        <ul class="check-list">
+                            <li><strong>Ускоренное межевание.</strong> Быстро уточню границы участка, чтобы они отображались на публичной кадастровой карте.</li>
+                            <li><strong>Техплан на дом.</strong> Узаконю реконструкцию, пристройки или новый дом, который еще не числится в ЕГРН.</li>
+                            <li><strong>Снятие приостановок.</strong> Разберусь с отказами Росреестра, исправлю чужие ошибки и доведу дело до успешной регистрации прав.</li>
+                        </ul>
+                    </div>
+                    <p>Перевожу с бюрократического на человеческий. Сэкономлю ваше время в очередях МФЦ.</p>
+                    
+                    <div class="actions">
+                        <a href="tel:+79000000000" class="btn">Позвонить инженеру</a>
+                    </div>
+                </div>
+
+                <!-- Панель 5: Бизнесу -->
+                <div class="pane" id="pane-business">
+                    <h2>Кадастровое оформление для бизнеса</h2>
+                    <p class="pane-lead">Ангары, склады, производственные базы, весовые и линейные объекты (ЛЭП, водопроводы) требуют строгой легализации для нормальной работы предприятия.</p>
+                    
+                    <div class="solution-box">
+                        <h3>Экспертиза для юрлиц:</h3>
+                        <ul class="check-list">
+                            <li><strong>Технические планы любой сложности.</strong> Оформление нежилых зданий и сооружений для постановки на учет и ввода в эксплуатацию.</li>
+                            <li><strong>Работа с линейными объектами.</strong> Образование частей участков, установление охранных зон и сервитутов.</li>
+                            <li><strong>Объединение и раздел.</strong> Перераспределение земельного фонда предприятия под новые задачи бизнеса.</li>
+                        </ul>
+                    </div>
+                    <p>Работаю официально (ИП). Оплата по безналичному расчету, закрывающие документы в срок. Несу личную материальную ответственность за каждый подготовленный план.</p>
+                    
+                    <div class="actions">
+                        <a href="tel:+79000000000" class="btn">Оценить объем работ</a>
+                        <a href="#" class="btn btn-outline">Запросить реквизиты</a>
+                    </div>
+                </div>
+
+                <!-- Подвал панели -->
+                <div class="engineer-footer">
+                    <!-- Заглушка, если нет фото -->
+                    <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--c-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;">ИИ</div>
+                    <div class="engineer-info">
+                        <strong>[Иванов Иван Иванович]</strong>
+                        Кадастровый инженер (Аттестат № 61-15-123)
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navBtns = document.querySelectorAll('.nav-btn');
+            const panes = document.querySelectorAll('.pane');
+
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // 1. Убираем класс active у всех кнопок и панелей
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    panes.forEach(p => p.classList.remove('active'));
+
+                    // 2. Добавляем active нажатой кнопке
+                    btn.classList.add('active');
+
+                    // 3. Показываем нужную панель
+                    const targetId = btn.getAttribute('data-target');
+                    const targetPane = document.getElementById(targetId);
+                    if (targetPane) {
+                        targetPane.classList.add('active');
+                        
+                        // Плавный скролл к контенту на мобильных
+                        if (window.innerWidth <= 900) {
+                            targetPane.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
